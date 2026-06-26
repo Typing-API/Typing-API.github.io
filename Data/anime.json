@@ -1,5 +1,29 @@
 [
   {
+    "w": "100倍返しだ！",
+    "k": "ひゃくばいがえしだ！",
+    "r": "hyakubaigaesida!",
+    "s": "半沢直樹"
+  },
+  {
+    "w": "今日は誰も何も説明してくれない！",
+    "k": "きょうはだれもなにもせつめいしてくれない",
+    "r": "kyouhadaremonanimosetumeisitekurenai!",
+    "s": "黄泉のツガイ"
+  },
+  {
+    "w": "命令は…しない",
+    "k": "めいれいはしない",
+    "r": "meireihasinai",
+    "s": "黄泉のツガイ"
+  },
+   {
+    "w": "兄様、ぎゅってしていい？",
+    "k": "にいさま ぎゅってしていい",
+    "r": "niisama gyuttesiteii?",
+    "s": "黄泉のツガイ"
+  },
+  {
     "w": "問おう、貴方が私のマスターか",
     "k": "とおう、あなたがわたしのますたーか",
     "r": "toou,anatawawatasinomasuta-ka",
@@ -34,6 +58,18 @@
     "k": "ああこころがぴょんぴょんするんじゃあ",
     "r": "aakokorogapyonpyonsurunjandaa",
     "s": "ご注文はうさぎですか？"
+  },
+  {
+    "w": "悪く思うなよ、全てはかわいい妹のためだ",
+    "k": "わるくおもうなよ すべてはかわいいいもうとのためだ",
+    "r": "warukuomounayo subetehakawaiiimoutonotameda",
+    "s": "夜桜さんちの大作戦"
+  },
+  {
+    "w": "最強の殺し屋",
+    "k": "さいきょうのころしや",
+    "r": "saikyonokoroshiya",
+    "s": "SAKAMOTO DAYS"
   },
   {
     "w": "抜錨！",
