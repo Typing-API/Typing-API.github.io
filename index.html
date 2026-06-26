@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>アニメ名言タイピングゲーム</title>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #game-container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 80%;
+            max-width: 600px;
+        }
+        #source {
+            font-size: 0.9rem;
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        #word {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        #kana {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        #roman-container {
+            font-size: 1.5rem;
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 1px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 6px;
+            min-height: 36px;
+            word-break: break-all;
+        }
+        .typed {
+            color: #ccc;
+        }
+        .untyped {
+            color: #333;
+        }
+        #info {
+            font-size: 1rem;
+            color: #666;
+        }
+        #start-btn {
+            padding: 10px 25px;
+            font-size: 1.2rem;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        #start-btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+
+<div id="game-container">
+    <div id="game-screen" style="display: none;">
+        <div id="source"></div>
+        <div id="word"></div>
+        <div id="kana"></div>
+        <div id="roman-container"></div>
+        <div id="info">スコア: <span id="score">0</span></div>
+    </div>
+    <div id="start-screen">
+        <h2>アニメ名言タイピング</h2>
+        <p id="status-text">データを読み込んでいます...</p>
+        <button id="start-btn" disabled>START</button>
+    </div>
+</div>
+
+<script>
+// ここにAPIを入れよう(今回はアニメっすね)
+const API_URL = 'https://typing-api.github.io/Data/anime.json'; 
+
+let typingData = []; // fetchしたデータを格納する配列
+let currentIndex = 0;
+let currentPosition = 0;
+let score = 0;
+let isPlaying = false;
+
+const startScreen = document.getElementById('start-screen');
+const gameScreen = document.getElementById('game-screen');
+const startBtn = document.getElementById('start-btn');
+const statusText = document.getElementById('status-text');
+const sourceElem = document.getElementById('source');
+const wordElem = document.getElementById('word');
+const kanaElem = document.getElementById('kana');
+const romanContainer = document.getElementById('roman-container');
+const scoreElem = document.getElementById('score');
+
+// ページ読み込み時に自動でAPIからデータをフェッチする
+async function fetchTypingData() {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+            throw new Error('ネットワークの応答が良くないっすね');
+        }
+        typingData = await response.json();
+        
+        statusText.textContent = 'スペースキーまたはボタンを押してスタート！';
+        startBtn.disabled = false;
+    } catch (error) {
+        console.error('データの取得に失敗しました:', error);
+        statusText.textContent = 'データの読み込みに失敗しました。URLを確認してください。';
+    }
+}
+
+// ゲーム開始
+function startGame() {
+    if (typingData.length === 0) return;
+    
+    startScreen.style.display = 'none';
+    gameScreen.style.display = 'block';
+    isPlaying = true;
+    score = 0;
+    scoreElem.textContent = score;
+    
+    // データをシャッフル
+    shuffleArray(typingData);
+    
+    currentIndex = 0;
+    nextWord();
+}
+
+// 配列のシャッフル
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
+
+// 次の問題を表示
+function nextWord() {
+    if (currentIndex >= typingData.length) {
+        alert(`ゲームクリア！あなたのスコアは ${score} です！`);
+        resetGame();
+        return;
+    }
+
+    currentPosition = 0;
+    const currentData = typingData[currentIndex];
+    
+    sourceElem.textContent = `【${currentData.s}】`;
+    wordElem.textContent = currentData.w;
+    kanaElem.textContent = currentData.k;
+    
+    updateRomanDisplay();
+}
+
+// ローマ字表示の更新
+function updateRomanDisplay() {
+    const roman = typingData[currentIndex].r;
+    const typedPart = roman.substring(0, currentPosition);
+    const untypedPart = roman.substring(currentPosition);
+    
+    romanContainer.innerHTML = `<span class="typed">${typedPart}</span><span class="untyped">${untypedPart}</span>`;
+}
+
+// ゲームのリセット
+function resetGame() {
+    isPlaying = false;
+    startScreen.style.display = 'block';
+    gameScreen.style.display = 'none';
+}
+
+// キー入力イベント
+window.addEventListener('keydown', (e) => {
+    // スタート画面でのスペースキー開始
+    if (!isPlaying && e.code === 'Space' && !startBtn.disabled) {
+        startGame();
+        e.preventDefault();
+        return;
+    }
+
+    if (!isPlaying) return;
+
+    const currentTargetRoman = typingData[currentIndex].r;
+    const expectedChar = currentTargetRoman[currentPosition].toLowerCase();
+    const pressedKey = e.key.toLowerCase();
+
+    if (pressedKey === expectedChar) {
+        currentPosition++;
+        score++;
+        scoreElem.textContent = score;
+        updateRomanDisplay();
+
+        if (currentPosition >= currentTargetRoman.length) {
+            currentIndex++;
+            setTimeout(nextWord, 100);
+        }
+    }
+});
+
+startBtn.addEventListener('click', startGame);
+
+// 初期化実行
+fetchTypingData();
+</script>
+
+</body>
+</html>
