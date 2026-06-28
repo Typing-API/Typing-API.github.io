@@ -1,0 +1,38 @@
+[
+  {
+    "s": "ネットワーク",
+    "w": "IPアドレス (Internet Protocol Address)",
+    "k": "あいぴーあどれす",
+    "r": "aipi-adoresu"
+  },
+  {
+    "s": "セキュリティ",
+    "w": "二要素認証 (Two-Factor Authentication)",
+    "k": "にようそにんしょう",
+    "r": "niyosoninsyou"
+  },
+  {
+    "s": "データベース",
+    "w": "トランザクション処理 (Transaction Processing)",
+    "k": "とらんざくしょんしょり",
+    "r": "toranzakusyonsyori"
+  },
+  {
+    "s": "開発手法",
+    "w": "アジャイル開発 (Agile Development)",
+    "k": "あじゃいるかいはつ",
+    "r": "ajairukaihatu"
+  },
+  {
+    "s": "クラウド",
+    "w": "サーバーレスアーキテクチャ (Serverless)",
+    "k": "さーばーれすあーきてくちゃ",
+    "r": "sa-ba-resua-kitekutya"
+  },
+  {
+    "s": "プログラミング",
+    "w": "オブジェクト指向 (Object-Oriented)",
+    "k": "おぶじぇくとしこう",
+    "r": "obujekutosikou"
+  }
+]
